@@ -8,7 +8,7 @@ export class User extends OModel {
   public username!: string;
   public password!: string;
   public companyId!: number;
-  public userType!: string;
+  public usertype!: string;
 
   static get tableName() {
     return "user";
@@ -27,7 +27,7 @@ export class User extends OModel {
 
   public static async create({
     name,
-    companyId,
+    companyId
   }: {
     name: string;
     companyId: number;
@@ -37,6 +37,7 @@ export class User extends OModel {
       username: name,
       companyId,
       password: this.generatePassword(),
+      usertype: "admin"
     });
   }
 }

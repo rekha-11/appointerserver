@@ -19,7 +19,7 @@ export const loginPost = async (req: Request, res: Response) => {
   const relatedUser = await User.query().findOne({ username });
   if (relatedUser && relatedUser.password === password) {
     const token = jwt.sign({ u: relatedUser.username }, "abcd", {
-      expiresIn: "60m",
+      expiresIn: "60m"
     });
     res.status(200).send({ token });
   } else {
@@ -34,16 +34,15 @@ export const getUser = async (req: any, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
   const { data } = req.body;
-  console.log(data);
   const user = await User.create({
-    name: data.name,
-    companyId: data.companyId,
+    name: data.user,
+    companyId: data.companyId
   });
   res.json(user);
 };
 
 export const getUsers = async (req: Request, res: Response) => {
   const { companyId } = req.params;
-  const usersList = User.query().where({ companyId });
+  const usersList = await User.query().where({ companyId });
   res.json(usersList);
 };
