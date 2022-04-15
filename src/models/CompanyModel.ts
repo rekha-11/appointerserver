@@ -7,7 +7,7 @@ export class Companies extends OModel {
   public active!: boolean;
 
   static get tableName() {
-    return "companies";
+    return "company";
   }
 
   static get idColumn() {

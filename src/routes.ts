@@ -3,6 +3,9 @@ import { JsonWebTokenError } from "jsonwebtoken";
 import * as UserRoutes from "./controllers/user";
 import jwt from "jsonwebtoken";
 import * as CompanyRoutes from "./controllers/rc";
+import * as BookingRoutes from "./controllers/booking";
+import * as ClientRoutes from "./controllers/clients";
+import * as ServiceProviderRoutes from "./controllers/serviceProvider";
 
 export const routes = express.Router();
 
@@ -36,13 +39,6 @@ const authenticate = (req: any, res: any, next: any) => {
   });
 };
 
-// company routes
-// Get("/companies", CompanyRoutes.getCompanies);
-// Get("/company/:id", CompanyRoutes.getCompany);
-// Post("/company", CompanyRoutes.postCompany);
-// Put("/company", CompanyRoutes.putCompany);
-// Delete("/company", CompanyRoutes.deleteCompany);
-
 //User
 Get("/login", UserRoutes.loginPost);
 Get("/user", authenticate, UserRoutes.getUser);
@@ -52,3 +48,20 @@ Get("/userList/:companyId", authenticate, UserRoutes.getUsers);
 //company
 Get("/companiesList", CompanyRoutes.getcompanies);
 Post("/createCompany", authenticate, CompanyRoutes.postCompany);
+Delete("/company/:id", authenticate, CompanyRoutes.deleteCompany);
+
+//booking
+Get("/bookings", authenticate, BookingRoutes.getBookings);
+Post("/bookings", authenticate, BookingRoutes.postBooking);
+
+//clients
+Post("/createClients", authenticate, ClientRoutes.postClients);
+Get("/getClients/:companyId", authenticate, ClientRoutes.getClients);
+
+//serviceProvider
+Post("/createSp", authenticate, ServiceProviderRoutes.postServiceProvider);
+Get(
+  "/getSp/:companyId",
+  authenticate,
+  ServiceProviderRoutes.getServiceProviders
+);

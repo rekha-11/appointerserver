@@ -4,9 +4,8 @@ import jwt from "jsonwebtoken";
 import { ClientsModel } from "../models/ClientsModel";
 
 export const getClients = async (req: Request, res: Response) => {
-  const { rcId } = req.query;
-  console.log(rcId);
-  const clients = await await ClientsModel.query();
+  const { companyId } = req.params;
+  const clients = await ClientsModel.query().where({ companyId });
   res.json(clients);
 };
 

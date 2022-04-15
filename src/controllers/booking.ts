@@ -3,48 +3,40 @@ import jwt from "jsonwebtoken";
 import { BookingModel } from "../models/BookingModel";
 
 export const getBookings = async (req: Request, res: Response) => {
-  const { rcId } = req.query;
-  const bookings = await BookingModel.query();
+  const { cId, spId } = req.query;
+  console.log(cId, spId);
+  const bookings = await BookingModel.query()
+    .where({ companyId: cId })
+    .modify((qb) => {
+      if (spId) {
+        qb.where({
+          spId,
+        });
+      }
+    });
   res.json(bookings);
 };
 
 export const postBooking = async (req: Request, res: Response) => {
   const {
-    clientId,
-    spId,
     bookingStartDate,
     bookingEndDate,
     description,
     companyId,
+    spId,
+    clientId,
+    status,
   } = req.body;
 
   const booking = await BookingModel.query().insertAndFetch({
-    clientId,
-    spId,
     bookingStartDate,
     bookingEndDate,
     description,
+    companyId,
+    spId,
+    clientId,
     status,
   });
+
   res.json(booking);
 };
-
-// export const getClients = async (req: Request, res: Response) => {
-//   const { rcId } = req.query;
-//   console.log(rcId);
-//   const clients = await await ClientsModel.query();
-//   res.json(clients);
-// };
-
-// export const postClients = async (req: Request, res: Response) => {
-//   const { name, phone, email, age, gender, companyId } = req.body;
-//   const clients = await ClientsModel.query().insertAndFetch({
-//     name,
-//     phone,
-//     email,
-//     age,
-//     gender,
-//     companyId,
-//   });
-//   res.json(clients);
-// };

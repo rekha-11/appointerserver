@@ -19,3 +19,9 @@ export const getCompany = async (req: Request, res: Response) => {
   const company = await RcModel.query().findOne({ id: 1 });
   res.json(company);
 };
+
+export const deleteCompany = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const company = await RcModel.query().deleteById(id);
+  res.json(company);
+};

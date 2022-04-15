@@ -2,15 +2,9 @@ import { Request, Response } from "express";
 const saltRounds = 10;
 import jwt from "jsonwebtoken";
 import { userInfo } from "os";
+import { Companies } from "../models/CompanyModel";
 
 import { User } from "../models/UserModel";
-
-// export const postAuthorization = async (req: Request, res: Response) => {
-//   const { username, password } = req.body;
-//   console.log(username, password);
-//   const auth = await User.query().insertAndFetch({ username, password });
-//   res.json(auth);
-// };
 
 export const loginPost = async (req: Request, res: Response) => {
   const { username, password } = req.query;
@@ -19,7 +13,7 @@ export const loginPost = async (req: Request, res: Response) => {
   const relatedUser = await User.query().findOne({ username });
   if (relatedUser && relatedUser.password === password) {
     const token = jwt.sign({ u: relatedUser.username }, "abcd", {
-      expiresIn: "60m"
+      expiresIn: "60m",
     });
     res.status(200).send({ token });
   } else {
@@ -28,15 +22,19 @@ export const loginPost = async (req: Request, res: Response) => {
 };
 
 export const getUser = async (req: any, res: Response) => {
+  let company: any = {};
   const relatedUser = await User.query().findOne({ username: req.username });
-  res.json(relatedUser);
+  if (relatedUser) {
+    company = await Companies.query().findById(relatedUser?.companyId);
+  }
+  res.json({ ...relatedUser, company });
 };
 
 export const createUser = async (req: Request, res: Response) => {
   const { data } = req.body;
   const user = await User.create({
     name: data.user,
-    companyId: data.companyId
+    companyId: data.companyId,
   });
   res.json(user);
 };

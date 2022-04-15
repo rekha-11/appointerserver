@@ -2,20 +2,18 @@ import { OModel } from "./DefaultModel";
 const becrypt = require("bcrypt");
 const altRounds = 10;
 
-export class BookingModel extends OModel {
+export class serviceProviderModel extends OModel {
   public id!: number;
   public created_at!: string | undefined;
   public updated_at?: string | undefined;
-  public clientId?: string;
-  public spId?: string;
-  public bookingStartDate!: string;
-  public bookingEndDate!: number;
-  public description!: string;
-  public status?: string;
-  public companyId!: string;
+  public name!: string;
+  public description?: string;
+  public email!: string;
+  public gender!: string;
+  public companyId!: number;
 
   static get tableName() {
-    return "bookings";
+    return "serviceProvider";
   }
 
   static get idColumn() {
